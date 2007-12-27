@@ -7,7 +7,7 @@ Summary:	%{_pearname} - Validation class for Finland
 Summary(pl.UTF-8):	%{_pearname} - klasa sprawdzająca poprawość dla Finlandii
 Name:		php-pear-%{_pearname}
 Version:	0.4.0
-Release:	1
+Release:	2
 License:	New BSD
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
@@ -69,6 +69,10 @@ Testy dla PEAR::%{_pearname}.
 %prep
 %pear_package_setup
 
+# pear/tests/pearname/tests -> pear/tests/pearname
+mv ./%{php_pear_dir}/tests/%{_pearname}/{tests/*,}
+rmdir ./%{php_pear_dir}/tests/%{_pearname}/tests
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{php_pear_dir}
@@ -85,4 +89,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files tests
 %defattr(644,root,root,755)
-%{php_pear_dir}/tests/Validate_FI/tests
+%{php_pear_dir}/tests/%{_pearname}
