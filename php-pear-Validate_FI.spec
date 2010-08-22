@@ -1,22 +1,22 @@
 %include	/usr/lib/rpm/macros.php
-%define		_class		Validate
-%define		_subclass	FI
-%define		_status		beta
+%define		_status		stable
 %define		_pearname	Validate_FI
 Summary:	%{_pearname} - Validation class for Finland
 Summary(pl.UTF-8):	%{_pearname} - klasa sprawdzająca poprawość dla Finlandii
 Name:		php-pear-%{_pearname}
-Version:	0.4.0
-Release:	4
+Version:	1.0.0
+Release:	1
 License:	New BSD
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	6de4fcaa54f47f364747ffa1e4c72694
+# Source0-md5:	0e4c252941a5f224d1f40bb2626a8692
 URL:		http://pear.php.net/package/Validate_FI/
+BuildRequires:	php-packagexml2cl
 BuildRequires:	php-pear-PEAR
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
-BuildRequires:	rpmbuild(macros) >= 1.300
+BuildRequires:	rpmbuild(macros) >= 1.571
 Requires:	php-pear
+Obsoletes:	php-pear-Validate_FI-tests
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -53,41 +53,25 @@ Pakiet do sprawdzania poprawności dla Finlandii danych takich jak:
 
 Ta klasa ma w PEAR status: %{_status}.
 
-%package tests
-Summary:	Tests for PEAR::%{_pearname}
-Summary(pl.UTF-8):	Testy dla PEAR::%{_pearname}
-Group:		Development/Languages/PHP
-AutoReq:	no
-Requires:	%{name} = %{version}-%{release}
-AutoProv:	no
-
-%description tests
-Tests for PEAR::%{_pearname}.
-
-%description tests -l pl.UTF-8
-Testy dla PEAR::%{_pearname}.
-
 %prep
 %pear_package_setup
 
-# pear/tests/pearname/tests -> pear/tests/pearname
-mv ./%{php_pear_dir}/tests/%{_pearname}/{tests/*,}
-rmdir ./%{php_pear_dir}/tests/%{_pearname}/tests
+%build
+packagexml2cl package.xml > ChangeLog
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{php_pear_dir}
 %pear_package_install
 
+# don't care for tests
+rm -rf $RPM_BUILD_ROOT%{php_pear_dir}/tests/%{_pearname}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc install.log
+%doc ChangeLog install.log
 %{php_pear_dir}/.registry/*.reg
 %{php_pear_dir}/Validate/FI.php
-
-%files tests
-%defattr(644,root,root,755)
-%{php_pear_dir}/tests/%{_pearname}
