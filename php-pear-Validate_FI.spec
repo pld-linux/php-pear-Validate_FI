@@ -1,4 +1,3 @@
-%include	/usr/lib/rpm/macros.php
 %define		_status		stable
 %define		_pearname	Validate_FI
 Summary:	%{_pearname} - Validation class for Finland
